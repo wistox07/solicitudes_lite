@@ -17,14 +17,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger("request_id");
-            $table->unsignedBigInteger("state_id");
+            $table->unsignedBigInteger("state_file_id");
             $table->string("name");
             $table->string("path");
             $table->integer("size");
             $table->string("extension");
             $table->foreign("user_id")->references("id")->on("users");
             $table->foreign("request_id")->references("id")->on("requests");
-            $table->foreign("state_id")->references("id")->on("state_files");
+            $table->foreign("state_file_id")->references("id")->on("state_files");
             $table->timestamps();
         });
     }

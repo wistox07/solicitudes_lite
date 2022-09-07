@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class TypeRequest extends Model
 {
     use HasFactory;
+
+    public $timestamps = false;
+
+    public function requests(){
+        return $this->hasMany(Request::class);
+    }
+
+    public function users(){
+        return $this->belongsToMany(User::class)->as('agents');
+    }
 }

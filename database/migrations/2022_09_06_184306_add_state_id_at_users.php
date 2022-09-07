@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('priority_requests', function (Blueprint $table) {
-            $table->id();
-            $table->string("name");
-            $table->integer("maximun_hours")->nullable();
-            $table->boolean("isActive")->default(true);
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedBigInteger("state_user_id");
+            $table->foreign("state_user_id")->references("id")->on("state_users");            
         });
+
+
     }
 
     /**
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('priority_requests');
+        //
     }
 };

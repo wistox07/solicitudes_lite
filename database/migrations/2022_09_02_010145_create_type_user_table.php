@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger("user_id");
             $table->unsignedBigInteger("type_request_id");
             $table->boolean("isActive")->default(true);
+            $table->boolean("isDefault");
             $table->foreign("user_id")->references("id")->on("users");
             $table->foreign("type_request_id")->references("id")->on("type_requests");
         });
