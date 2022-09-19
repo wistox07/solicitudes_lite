@@ -53,4 +53,8 @@ class User extends Authenticatable
     public function types(){
         return $this->belongsToMany(TypeRequest::class)->as('agents');
     }
+
+    public function register_requests(){
+        return $this->hasMany(Request::class,"register_id");
+    }
 }

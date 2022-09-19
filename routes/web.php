@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\RequestController;
+use App\Models\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +14,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
 Route::get('/', function () {
     return view('welcome');
 });
+*/
+Route::get("/solicitudes/list",[RequestController::class,"list"]);
+Route::resource("/solicitudes",RequestController::class);
+

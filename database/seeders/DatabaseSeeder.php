@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\PriorityRequest;
 use App\Models\Profile;
+use App\Models\Request;
 use App\Models\SatisfactionRequest;
 use App\Models\StateFile;
 use App\Models\StateRequest;
@@ -33,6 +34,7 @@ class DatabaseSeeder extends Seeder
         StateRequest::factory()->create(["name" => "Detenido"]);
         StateRequest::factory()->create(["name" => "Rechazado"]);
         StateRequest::factory()->create(["name" => "Eliminado"]);
+        StateRequest::factory()->create(["name" => "Completo"]);
 
         StateFile::factory()->create(["name" => "Activo"]);
         StateFile::factory()->create(["name" => "Eliminado"]);
@@ -85,6 +87,10 @@ class DatabaseSeeder extends Seeder
             'type_request_id' => 2,
             "isDefault" => 1
         ]);
+
+        Request::factory(20)->create();
+
+        
     }
 
     public function array($max){

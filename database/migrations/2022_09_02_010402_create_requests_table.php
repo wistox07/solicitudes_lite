@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("register_id");
-            $table->unsignedBigInteger("updater_id");
+            $table->unsignedBigInteger("updater_id")->nullable();
             $table->unsignedBigInteger("petitioner_id");
             $table->unsignedBigInteger("agent_id");
             $table->unsignedBigInteger("type_request_id");
