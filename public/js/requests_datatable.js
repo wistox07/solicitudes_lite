@@ -6,25 +6,24 @@
     
     }
 
-    //$.fn.dataTable.ext.errMode = 'throw';
+    $.fn.dataTable.ext.errMode = 'throw';
 
     var gUploadedFiles = new Array();
 
     $('#table_requests').DataTable({
         responsive:true,
+        "serverSide" : true,
         "ajax":{
             "url" : getURL()+"/solicitudes/list",
             "type" : "GET",
             "data" : function(d) {
-                d.ticket = $("input[name=ticket").val()/*,
-                
+                d.ticket = $("input[name=ticket").val(),
                 d.f_type = $("select[name=f_type]").val(),
                 d.f_state = $("select[name=f_state]").val(),
                 d.f_petitioner = $("select[name=f_petitioner]").val(),
                 d.f_agent = $("select[name=f_agent]").val(),
                 d.f_date_init = $("input[name=f_date_init]").val(),
                 d.f_date_end = $("input[name=f_date_end]").val()
-                */
             },
         },
         "columns": [
@@ -42,7 +41,7 @@
         ],
         'columnDefs': [
             {                
-                'targets': [4,5,6,7,8,9,10],
+                'targets': [4,6,7,8,9,10],
                 'class': 'text-center'
             }
         ],
@@ -344,21 +343,31 @@
             }
         });
     }
+
+    $("input[name=f_date_init], input[name=f_date_end], input[name=ticket]").on('blur', function() {
+        
+        let table = $('#table_requests').DataTable();
+        table.ajax.reload();
     
-    $("select[name=solicitud_tipo_id]").on("change", function() {
-
-        $("select[name=solicitud_subtipo_id]").empty();
-        $("select[name=solicitud_subtipo_id]").append("<option value=''>SELECCIONE</option>");
-
-        $("select[name=responsable_id]").empty();
-        $("select[name=responsable_id]").append("<option value=''>SELECCIONE</option>");
-
-        if($("select[name=solicitud_tipo_id]").val() !== "")
-        {
-            obtenerSubtipos($("select[name=solicitud_tipo_id]").val());
-            obtenerResponsable($("select[name=solicitud_tipo_id]").val());
-        }
     });
+    
+    $("select[name=f_type], select[name=f_petitioner], select[name=f_agent]").on("change", function() {
+
+        //$("select[name=solicitud_subtipo_id]").empty();
+        //$("select[name=solicitud_subtipo_id]").append("<option value=''>SELECCIONE</option>");
+
+        //$("select[name=responsable_id]").empty();
+        //$("select[name=responsable_id]").append("<option value=''>SELECCIONE</option>");
+
+        //if($("select[name=f_type]").val() !== "")
+       // {
+            let table = $('#table_requests').DataTable();
+            table.ajax.reload();
+            //obtenerSubtipos($("select[name=solicitud_tipo_id]").val());
+            //obtenerResponsable($("select[name=solicitud_tipo_id]").val());
+       // }
+    });
+
 
     $("select[name=solicitud_subtipo_id]").on("change", function() {
 
@@ -374,18 +383,13 @@
 
 
 
-    $("select[name=f_estado]").on("change", function() {
-        let table = $('#tabla_trabajador').DataTable();
+    $("select[name=f_state]").on("change", function() {
+        let table = $('#table_requests').DataTable();
         table.ajax.reload();
 
     });
 
-    $("input[name=f_fecha_registro_inicio], input[name=f_fecha_registro_fin], input[name=f_busqueda]").on('blur', function() {
-        
-            let table = $('#tabla_trabajador').DataTable();
-			table.ajax.reload();
-        
-    });
+
     $('#tabla_trabajador tbody').on( 'click', '#eliminar_trabajador', function () {
         var token = $(this).data("id");
         var estado = {

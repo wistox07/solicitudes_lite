@@ -20,8 +20,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script type="text/javascript" src="{{ URL::asset('js/requests.js') }}"></script>
+<script type="text/javascript" src="{{ URL::asset('js/requests_datatable.js') }}"></script>
 @endsection
 
 @section("section")
@@ -55,18 +54,22 @@
                         @endforeach
                         </select>
                     </div>
-                    {{-- @if (Auth::user()->perfil->id == "3") --}}
-                    <div class="col-12 col-lg-6 col-xl-2">
-                        <label class="form-label">Solicitante</label>
-                        <select class="form-select form-select-sm" name="f_petitioner">
-                        <option selected value="0">Solicitante</option>
-                        @foreach ($petitioners as $petitioner)
-                                <option value="{{$petitioner->id}}">{{$petitioner->name}}</option>
-                        @endforeach
-                        </select>
-                    </div>
 
-                    {{-- @if (Auth::user()->perfil->id == "3") --}}
+                    @if(session()->get("user")->hasRole("Admin") || session()->get("user")->hasRole("Agent"))
+                        <div class="col-12 col-lg-6 col-xl-2">
+                            <label class="form-label">Solicitante</label>
+                            <select class="form-select form-select-sm" name="f_petitioner">
+                            <option selected value="0">Solicitante</option>
+                            @foreach ($petitioners as $petitioner)
+                                    <option value="{{$petitioner->id}}">{{$petitioner->name}}</option>
+                            @endforeach
+                            </select>
+                        </div>
+                    @endif   
+
+                    
+
+                    
                     <div class="col-12 col-lg-6 col-xl-2">
                         <label class="form-label">Encargado</label>
                         <select class="form-select form-select-sm" name="f_agent">

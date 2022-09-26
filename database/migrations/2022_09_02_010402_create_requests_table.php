@@ -38,7 +38,8 @@ return new class extends Migration
             $table->text("description");
             $table->dateTime("register_date")->useCurrent();
             $table->dateTime("start_date")->nullable();
-            $table->dateTime("tentative_end_date");
+            $table->integer("maximum_hours")->nullable();
+            $table->dateTime("tentative_end_date")->nullable();
             $table->dateTime("end_date")->nullable();
         });
     }

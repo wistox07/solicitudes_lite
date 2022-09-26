@@ -68,25 +68,22 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>-->
-           
+            @can("usuarios.index")
             <li class="nav-item {{ (request()->is('users*')) ? 'active' : '' }}">
                 <a class="nav-link" href="/users">
                 <i class="fa fa-user fa-fw"></i>
                     <span>Usuarios</span></a>
             </li>
-            
+            @endcan
 
-            <li class="nav-item {{ (request()->is('workers*')) ? 'active' : '' }}">
-                <a class="nav-link" href="/workers">
-                <i class="fa-solid fa-user-tie fa-fw"></i>
-                    <span>Trabajadores</span>
-                </a>
-            </li>
-            <li class="nav-item {{ (request()->is('requests*')) ? 'active' : '' }}">
-                <a class="nav-link" href="/requests">
+
+            @can("solicitudes.index")
+            <li class="nav-item {{ (request()->is('solicitudes*')) ? 'active' : '' }}">
+                <a class="nav-link" href="/solicitudes">
                 <i class="fa fa-book fa-fw"></i>
                     <span>Solicitudes</span></a>
             </li>
+            @endcan
         </ul>
         <!-- End of Sidebar -->
 
@@ -137,8 +134,8 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="custom">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{-- Auth::user()->trabajador->nombres --}} {{-- Auth::user()->trabajador->apellido_paterno --}}</span>
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{-- Auth::user()->perfil->nombre --}}</span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{session()->get("user")->profile->fullname}}</span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{session()->get("user")->roles->pluck('name')->first()}}</span>
                                 </div>
                                 <img class="img-profile rounded-circle"
                                     src="{{URL::asset('sb_admin/img/undraw_profile.svg')}}">
@@ -203,7 +200,7 @@
                 <div class="modal-body">Seleccione "Cerrar" si esta listo para  cerrar la sesion actual.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{{-- route("logout") --}}">Cerrar</a>
+                    <a class="btn btn-primary" href='{{ route("logout") }}'>Cerrar</a>
                 </div>
             </div>
         </div>

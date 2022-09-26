@@ -12,8 +12,8 @@ class Request extends Model
     public $timestamps = false;
 
     protected $casts = [
-        'register_date' => 'datetime:Y/m/d',
-        'start_date' => 'datetime:Y/m/d'
+        'register_date' => 'datetime:d/m/Y',
+        'start_date' => 'datetime:d/m/Y'
 
     ];
     

@@ -16,6 +16,6 @@ class TypeRequest extends Model
     }
 
     public function users(){
-        return $this->belongsToMany(User::class)->as('agents');
+        return $this->belongsToMany(User::class,"type_user");
     }
 }

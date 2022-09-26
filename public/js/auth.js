@@ -12,25 +12,25 @@
             type:'POST',
             url:  getURL() + '/authentication/login',
             data:{
-               usuario : $("input[name=usuario]").val(),
-               contraseña: $("input[name=contraseña]").val()
+               email : $("input[name=email]").val(),
+               password: $("input[name=password]").val()
             },
             beforeSend: function() {
                 $("#message").hide();
-                $("#btnLogear").html("<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Loading...")
-                $("#usuario").removeClass("is-invalid");
-                $("#contraseña").removeClass("is-invalid");
+                $("#btnlogin").html("<span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span> Loading...")
+                $("#email").removeClass("is-invalid");
+                $("#password").removeClass("is-invalid");
 
             },
             complete: function(){
-                $("#btnLogear").html("Login")
+                $("#btnlogin").html("Login")
 
             },
             statusCode:{
                 422: function(request, status, error){
                     //422 -- ERRROR DE VALIDACION
                     var data = request.responseJSON.data;
-                    $("#login").validate().showErrors(data);
+                    $("#btnlogin").validate().showErrors(data);
                     for (const prop in data) {                                                
                         $(`input[name=${prop}]`).addClass("is-invalid");
                       }
@@ -64,14 +64,14 @@
     $("#login").validate({
         rules: {
             // ADJUNTAR DOCUMENTOS
-            usuario: { required: true },
-            contraseña: {required : true}
+            email: { required: true },
+            password: {required : true}
         },
         messages: {
-            usuario:{
+            email:{
                 required: "Campo obligatorio"
             },
-            contraseña:{
+            password:{
                 required: "Campo obligatorio"
             }
         },
