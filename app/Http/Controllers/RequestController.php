@@ -147,7 +147,12 @@ class RequestController extends Controller
             DB::raw("CONCAT(p_agent.name , ' ',p_agent.last_name) as agent"),
             "type.name as type",
             DB::raw("IFNULL(prio.name , 'Sin Asignar') as priority_request"),
-            "prio.name as porcent_progress",
+            DB::raw("CASE 
+            WHEN ISNULL(maximum_hours) THEN 0
+            WHEN NOW() > tentative_end_date THEN 100
+            ELSE 
+            TRUNCATE ((TIMESTAMPDIFF(MINUTE, start_date, NOW()) / maximum_hours )* 100, 0)
+            END AS porcent_progress"),
             "st.name as state_request",
             DB::raw("IFNULL(sa.name , 'Sin Asignar') as satisfaction_request")
         ]);
@@ -275,8 +280,9 @@ class RequestController extends Controller
         })
         ->addColumn('progress', function($row){
             
-            return "<div class='progress'>
-                        <div class='progress-bar progress-bar-striped bg-primary' role='progressbar' style='width: 50%' aria-valuenow='50' aria-valuemin='0' aria-valuemax='100'></div>
+            return  "<span class='badge badge-light'>".$row->porcent_progress."% </span>
+                    <div class='progress'>
+                        <div class='progress-bar progress-bar-striped bg-primary' role='progressbar' style='width:".$row->porcent_progress ."%' aria-valuenow='".$row->porcent_progress ."' aria-valuemin='0' aria-valuemax='100'></div>
                     </div>";
         })
         ->addColumn('priority', function($row){
