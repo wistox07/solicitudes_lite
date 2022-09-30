@@ -101,6 +101,46 @@
             </div>
         @endif
     </form>
+    @if ($action=="view")
+    <div class="row g-3 mt-0">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Actividad
+                </div>
+                <div class="card-body">
+                    <!-- Component Preview-->
+                    <div class="">
+                        <div class="sbp-preview-content">
+                            <div class="timeline">
+                            @foreach ($comments as $comment)
+                            <div class="timeline-item">
+                                    <div class="timeline-item-marker">
+                                    
+                                        <div class="timeline-item-marker-text fw-bold text-primary">{{ $comment->created_at->isoFormat('MMM Do YYYY') }} <br> {{ $comment->created_at->isoFormat('h:mm:ss a') }} </div> 
+                                        <div class="timeline-item-marker-indicator bg-primary-soft text-primary"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-flag"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg></div>
+                                    </div>
+                                    <div class="timeline-item-content pt-0">
+                                        <div class="card shadow-sm">
+                                            <div class="card-body">
+                                            <h5 class="text-primary">{{$comment->user->profile->fullName }}</h5>
+                                                {{$comment->title}} <br>
+                                                {{$comment->comment}}
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            @endforeach
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    @endif
 
 </div>
 @endsection

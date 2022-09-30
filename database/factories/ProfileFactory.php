@@ -20,7 +20,7 @@ class ProfileFactory extends Factory
 
             'name' => fake()->name(),
             'last_name' => fake()->lastName(),
-            'birth' => fake()->dateTime()
+            'birth' => fake()->address()
         ];
     }
 }

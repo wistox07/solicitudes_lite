@@ -12,7 +12,7 @@ class TypeRequest extends Model
     public $timestamps = false;
 
     public function requests(){
-        return $this->hasMany(Request::class);
+        return $this->hasMany(Request::class,"type_request_id");
     }
 
     public function users(){

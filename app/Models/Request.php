@@ -21,7 +21,7 @@ class Request extends Model
 
 
     public function type(){
-        return $this->belongsTo(TypeRequest::class);
+        return $this->belongsTo(TypeRequest::class,"type_request_id");
     }
 
     public function state(){
@@ -38,9 +38,15 @@ class Request extends Model
         return $this->belongsTo(SatisfactionRequest::class);
     }
     public function comments(){
-        return $this->hasMany(Comments::class);
+        return $this->hasMany(Comment::class);
     }
     public function register(){
         return $this->belongsTo(User::class,"register_id");
+    }
+    public function petitioner(){
+        return $this->belongsTo(User::class,"petitioner_id");
+    }
+    public function agent(){
+        return $this->belongsTo(User::class,"agent_id");
     }
 }

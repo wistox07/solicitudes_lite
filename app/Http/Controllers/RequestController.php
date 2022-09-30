@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendEmailJob;
 use App\Models\Profile;
 use App\Models\Request as ModelsRequest;
 use App\Models\StateRequest;
 use App\Models\TypeRequest;
 use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use DataTables;
@@ -148,10 +150,10 @@ class RequestController extends Controller
             "type.name as type",
             DB::raw("IFNULL(prio.name , 'Sin Asignar') as priority_request"),
             DB::raw("CASE 
-            WHEN ISNULL(maximum_hours) THEN 0
+            WHEN ISNULL(maximum_minutes) THEN 0
             WHEN NOW() > tentative_end_date THEN 100
             ELSE 
-            TRUNCATE ((TIMESTAMPDIFF(MINUTE, start_date, NOW()) / maximum_hours )* 100, 0)
+            TRUNCATE ((TIMESTAMPDIFF(MINUTE, start_date, NOW()) / maximum_minutes )* 100, 0)
             END AS porcent_progress"),
             "st.name as state_request",
             DB::raw("IFNULL(sa.name , 'Sin Asignar') as satisfaction_request")
@@ -441,8 +443,18 @@ class RequestController extends Controller
             $modelRequest->register_id = session()->get("user")->id;
             $modelRequest->state_request_id = 1; // PENDIENTE
             $modelRequest->save();
+
+
+            $comment = new Comment();
+            $comment->user_id = session()->get("user")->id;
+            $comment->title = "Solicitud Registrada";
+            $comment->comment = "La solicitante del ticket es ". User::find($request->petitioner_id)->profile->name;
+            $modelRequest->comments()->save($comment);
             DB::commit();
-            return response()->json(["data" => ["redirect" => "/solicitudes"]],200);
+
+            $dataRequest = ModelsRequest::with("petitioner","agent","type")->find($modelRequest->id);
+            SendEmailJob::dispatch($dataRequest)->afterCommit();
+            //return response()->json(["data" => ["redirect" => "/solicitudes"]],200);
             /*            
             if ($request->hasFile('file')) {
 
@@ -498,7 +510,7 @@ class RequestController extends Controller
         $data["title_html"] = "Editar Solicitud";
         $data["title_module"] = "Editar Solicitud" ;
 
-        $data["request"]  = ModelsRequest::find($id);
+        $data["request"]  = ModelsRequest::with("comments")->find($id);
         //$archivos = $solicitud->archivos()->Activo()->get();
 
 
@@ -646,7 +658,11 @@ class RequestController extends Controller
         $data["title_html"] = "Ver Solicitud";
         $data["title_module"] = "Ver Solicitud" ;
 
-        $data["request"]  = ModelsRequest::find($id);
+        $request = ModelsRequest::find($id);
+        $data["request"] = $request;
+
+        $comments = $request->comments()->with("user")->orderBy('created_at', 'DESC')->get();
+        $data["comments"] = $comments;
 
         $types = TypeRequest::select(["id","name"])->where("isActive","=",true);
 

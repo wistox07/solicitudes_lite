@@ -59,4 +59,14 @@ class User extends Authenticatable
     public function register_requests(){
         return $this->hasMany(Request::class,"register_id");
     }
+    public function petitioner_requests(){
+        return $this->hasMany(Request::class,"petitioner_id");
+    }
+    public function agent_requests(){
+        return $this->hasMany(Request::class,"agent_id");
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class,"user_id");
+    }
 }
